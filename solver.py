@@ -20,18 +20,30 @@ def exist(board, word) -> bool:
             if dfs(r,c,0): return True
     return False
 
+def read_board_from_file(filename):
+    board = []
+    with open(filename, 'r') as file:
+        for line in file:
+            print(line.strip()) 
+            row = [char for char in line.strip() if char != ' ' and char != ',']
+            if row:
+                board.append(row)
+    return board
+
 if __name__ == "__main__":
-    board = [
-        ["A", "B", "C", "E"],
-        ["S", "F", "C", "S"],
-        ["A", "D", "E", "E"]
-    ]
-    for row in board:
-        print(row)
+    board_type = input("What size board? (small/medium/large): ")
+    valid_types = ['small','medium','large']
+
+    while board_type not in valid_types:
+        board_type = input("Please input a valid size: (small/medium/large): ")
+
+    board = read_board_from_file(f"./boards/{board_type}_board.txt")
 
     while(1):
         board_copy= copy.deepcopy(board)
-        word = input("Enter a word to find: ").upper()
+        word = input("\nEnter a word to find: ").upper()
+        if word=="EXIT()":
+            break
         if exist(board, word):
             print(f"{word} is present in the board.")
         else:
